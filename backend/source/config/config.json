@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "pbs_user",
+    "password": "development",
+    "database": "pbs",
+    "host": "127.0.0.1",
+    "dialect": "postgresql"
+  },
+  "test": {
+    "username": "pbs_user",
+    "password": "development",
+    "database": "pbs",
+    "host": "127.0.0.1",
+    "dialect": "postgresql"
+  },
+  "production": {
+    "username": "pbs_user",
+    "password": "development",
+    "database": "pbs",
+    "host": "127.0.0.1",
+    "dialect": "postgresql"
+  }
+}

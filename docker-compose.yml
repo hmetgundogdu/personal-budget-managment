@@ -1,0 +1,29 @@
+version: "3"
+
+services:
+  frontend:
+    container_name: frontend-web
+    build: ./frontend
+    command: sh -c "yarn install && yarn serve"
+    working_dir: /app
+    volumes:
+      - ./frontend/source:/app
+    ports:
+      - "80:8080"
+  backend:
+    container_name: backend-http-api
+    build:
+      context: ./backend
+  sql-server:
+    container_name: sql-server
+    image: postgres:12
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: pbs_user
+      POSTGRES_PASSWORD: development
+      POSTGRES_DB: pbs
+    volumes:
+      - ./data-postgres:/var/lib/postgresql/data
+volumes:
+  data-postgres: {}
