@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             nullable: false,
         },
-        nextGenerationTime: {
+        nextCreationTime: {
             type: Sequelize.DATE,
             nullable: false,
         }
