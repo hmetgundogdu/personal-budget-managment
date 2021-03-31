@@ -16,7 +16,10 @@ export default (endPoint, options = {}, getResponse) => {
     let fetchPromise = window.fetch(`${config.apiUrl}/${endPoint}`, options)
 
     if(!getResponse)
-        fetchPromise = fetchPromise.then((res) => res.json())
+        fetchPromise = fetchPromise.then((res) => {
+            res.json()
+            document.dispatchEvent(new CustomEvent("apiCall", { res }))
+        })
 
     return fetchPromise
 }
