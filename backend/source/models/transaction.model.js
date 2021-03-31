@@ -21,6 +21,11 @@ module.exports = (sequelize, Sequelize) => {
         sign: {
             type: Sequelize.BOOLEAN(1),
         },
+        isGenesis: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false, 
+            defaultValue: false
+        }
     }, { underscored: true })
 
     Transaction.associate = function (models) {

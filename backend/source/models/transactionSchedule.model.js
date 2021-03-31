@@ -17,14 +17,9 @@ module.exports = (sequelize, Sequelize) => {
         endTime: {
             type: Sequelize.DATE,
             nullable: true,
-        },
-        deletedAt: {
-            type: Sequelize.DATE,
-            allowNull: false
         }
     }, {
         underscored: true,
-        timestamps: true,
         paranoid: true
     })
 
