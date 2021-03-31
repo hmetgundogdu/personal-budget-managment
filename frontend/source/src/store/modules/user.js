@@ -51,7 +51,7 @@ const actions = {
             session = JSON.parse(session);
 
             commit("setUsername", session.username);
-            commit("setAccessToken", session.token);
+            commit("setAccessToken", session.accessToken);
             // check islogin from server
 
             resolve(true);
