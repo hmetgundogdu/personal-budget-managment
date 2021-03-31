@@ -17,6 +17,14 @@ module.exports = (sequelize, Sequelize) => {
         endTime: {
             type: Sequelize.DATE,
             nullable: true,
+        },
+        lastCreationTime: {
+            type: Sequelize.DATE,
+            nullable: false,
+        },
+        nextGenerationTime: {
+            type: Sequelize.DATE,
+            nullable: false,
         }
     }, {
         underscored: true,
