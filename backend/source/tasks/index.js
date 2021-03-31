@@ -1,6 +1,11 @@
 const sleep = (time) => (new Promise((resolve) => setTimeout(resolve, time)));
 // create new transaction by schedule
-async function ScheduleManager() {
+async function ScheduleManager(db) {
+
+    const schedules = db
+
+    console.log(schedules)
+
     this.running = true;
     while(this.running) {
         // get schedules today will repeat

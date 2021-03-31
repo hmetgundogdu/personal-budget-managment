@@ -40,6 +40,6 @@ app.use(function (req, res) {
 db.sequelize.sync()
 app.listen(81)
 
-require("./tasks").ScheduleManager();
+require("./tasks").ScheduleManager(db);
 
 console.log('Server started.')
