@@ -14,10 +14,6 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DECIMAL(12, 2),
             allowNull: false
         },
-        status: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
         sign: {
             type: Sequelize.BOOLEAN(1),
         },
