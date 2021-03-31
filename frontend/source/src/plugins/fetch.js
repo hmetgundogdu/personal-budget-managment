@@ -17,8 +17,8 @@ export default (endPoint, options = {}, getResponse) => {
 
     if(!getResponse)
         fetchPromise = fetchPromise.then((res) => {
-            res.json()
             document.dispatchEvent(new CustomEvent("apiCall", { res }))
+            return res.json()
         })
 
     return fetchPromise
