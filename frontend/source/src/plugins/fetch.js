@@ -1,5 +1,5 @@
 import config from "../config"
-export default (endPoint, options = {}) => {
+export default (endPoint, options = {}, getResponse) => {
 
     const defaultOptions = {
         headers: {
@@ -8,11 +8,15 @@ export default (endPoint, options = {}) => {
     }
 
     options = Object.assign(defaultOptions, options)
-    console.log(options)
 
     if (options.body && typeof options.body != "string") {
         options.body = JSON.stringify(options.body)
     }
 
-    return window.fetch(`${config.apiUrl}/${endPoint}`, options)
+    let fetchPromise = window.fetch(`${config.apiUrl}/${endPoint}`, options)
+
+    if(!getResponse)
+        fetchPromise = fetchPromise.then((res) => res.json())
+
+    return fetchPromise
 }

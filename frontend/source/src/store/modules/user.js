@@ -17,22 +17,23 @@ const mutations = {
 const actions = {
     login({ state, commit }, loginInformation) {
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
 
-            this._vm.$http("session", { method: "POST", body: loginInformation }).then((response) => {
-                if(response.data.success)
-                {
+            this._vm.$http("session", { method: "POST", body: loginInformation }).then((data) => {
+                const { success, payload, error } = data;
+
+                if (error) {
+                    reject(error);
+                } else if (success) {
                     commit("setUsername", loginInformation.username);
-                    commit("setAccessToken", response.success.token);
+                    commit("setAccessToken", payload.token);
 
-                    resolve(true)
+                    window.localStorage.setItem("session", JSON.stringify(state));
                 }
+
+                resolve(success)
             })
 
-            // TODO
-            window.localStorage.removeItem("session", JSON.stringify(state));
-
-            resolve(true);
         })
     },
     logout({ commit }) {

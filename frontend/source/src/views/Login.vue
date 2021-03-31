@@ -42,8 +42,8 @@
 export default {
   name: "Login",
   data: () => ({
-    username: null,
-    password: null,
+    username: "ahmet",
+    password: "1234",
     formIsValid: false,
   }),
   methods: {
