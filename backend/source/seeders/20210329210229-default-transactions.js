@@ -15,7 +15,6 @@ module.exports = {
         id,
         start_date: new Date(),
         amount: (id * Math.random() * 100),
-        status: 1,
         sign: true,
         created_at: new Date(),
         updated_at: new Date(),
@@ -24,6 +23,10 @@ module.exports = {
         transaction_situation_id: getRandomArbitrary(1, 4),
       });
     }
+
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
     // add scheduled transaction
     for (let id = 1; id < 5; id++) {
       schedules.push({
@@ -31,7 +34,9 @@ module.exports = {
         transaction_id: id,
         repetition: 1,
         times: 15,
-        end_time: id % 2 == 0 ? new Date() : null,
+        end_time: id % 2 == 0 ? tomorrow : null,
+        next_creation_time: tomorrow,
+        last_creation_time: today,
         created_at: new Date(),
         updated_at: new Date()
       })

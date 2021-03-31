@@ -6,13 +6,13 @@ module.exports = (sequelize, Sequelize) => {
             primaryKey: true,
             autoIncrement: true
         },
-        repetition: {
-            type: Sequelize.INTEGER,
+        repetitionType: { // 1 = Day, 2 = Week...
+            type: Sequelize.INTEGER(1),
             nullable: true
         },
         times: {
-            type: Sequelize.INTEGER,
-            nullable: false,
+            type: Sequelize.INTEGER(1),
+            nullable: true,
         },
         endTime: {
             type: Sequelize.DATE,
@@ -22,7 +22,12 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             nullable: false,
         },
-        nextCreationTime: {
+        nextCreationTime: { // absolute time
+            type: Sequelize.DATE,
+            nullable: false,
+        },
+        // this is when we create transaction time, means thats equals nextCreationTime - (repetationType * 1) 
+        transactionEntryTime: { 
             type: Sequelize.DATE,
             nullable: false,
         }

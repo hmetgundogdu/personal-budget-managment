@@ -19,8 +19,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         isGenesis: {
             type: Sequelize.BOOLEAN,
-            allowNull: false, 
+            allowNull: false,
             defaultValue: false
+        },
+        note_id: {
+            type: Sequelize.INTEGER,
+            nullable: true
         }
     }, { underscored: true })
 
@@ -28,6 +32,7 @@ module.exports = (sequelize, Sequelize) => {
         Transaction.belongsTo(models.user)
         Transaction.belongsTo(models.transactionCategory)
         Transaction.belongsTo(models.transactionSituation)
+        Transaction.hasOne(models.transactionNote, { foreignKey: "node_id" })
     }
 
     return Transaction

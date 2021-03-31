@@ -8,10 +8,12 @@ async function ScheduleManager(db) {
     // SCHEDULE(isNotDeleted,  ) ---> transaction_id ---> TRANSACTION
 
 
-    const schedules = await db.transactionSchedule.findAll();
+    const schedules = await db.transactionSchedule.findAll({
+        where: 
+    });
 
     for(const schedule of schedules) {
-        console.log(schedule);
+        console.log(schedule.dataValues);
 
         break;
     }
@@ -22,7 +24,7 @@ async function ScheduleManager(db) {
         console.log("Schedule manager running...");
         // get schedules today will repeat
         // create new transactions
-        await sleep(5000)
+        await sleep(10000)
     }
 }
 
