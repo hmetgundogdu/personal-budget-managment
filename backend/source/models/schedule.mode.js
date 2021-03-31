@@ -18,8 +18,14 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DATE,
             nullable: true,
         },
+        deletedAt: {
+            type: Sequelize.DATE,
+            allowNull: false
+        }
     }, {
         underscored: true,
+        timestamps: true,
+        paranoid: true
     })
 
     TransactionSchedule.associate = function (models) {
