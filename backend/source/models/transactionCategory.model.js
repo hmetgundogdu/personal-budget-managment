@@ -16,8 +16,8 @@ module.exports = (sequelize, Sequelize) => {
         updatedAt: false,
     })
 
-    TransactionCategory.associate = function () {
-
+    TransactionCategory.associate = function (models) {
+        TransactionCategory.hasMany(models.transaction)
     };
 
     return TransactionCategory

@@ -16,8 +16,8 @@ module.exports = (sequelize, Sequelize) => {
         updatedAt: false,
     })
 
-    TransactionSituation.associate = function () {
-
+    TransactionSituation.associate = function (models) {
+        TransactionSituation.hasMany(models.transaction)
     };
 
     return TransactionSituation

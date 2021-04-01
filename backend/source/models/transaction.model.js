@@ -29,8 +29,6 @@ module.exports = (sequelize, Sequelize) => {
     }, { underscored: true })
 
     Transaction.associate = function (models) {
-        Transaction.hasOne(models.transactionCategory)
-        Transaction.hasOne(models.transactionSituation)
         Transaction.hasOne(models.transactionNote, { foreignKey: "id" })
     }
 
