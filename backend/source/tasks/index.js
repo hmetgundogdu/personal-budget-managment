@@ -3,26 +3,10 @@
 const sleep = (time) => (new Promise((resolve) => setTimeout(resolve, time)));
 const { Op } = require("sequelize");
 
-function addTimeToDateByRepetitionTypeAndTimes(repatitionType, times, value, negative = false) {
-    let result = new Date(value)
-    const computation = (value1, value2) => {
-        return negative ? value1 - value2 : value1 + value2
-    }
-    switch (repatitionType) {
-        case 1: result.setDate(computation(result.getDate(), times))
-            return result;
-        case 2: result.setDate(computation(result.getDate(), times * 7))
-            return result;
-        case 3: result.setMonth(computation(result.getMonth(), times))
-            return result;
-        case 4: result.setFullYear(computation(result.getFullYear() + times))
-            return result;
-    }
-}
+const addTimeToDateByRepetitionTypeAndTimes = require('../modules/addTimeToDateByRepetitionTypeAndTimes');
 
 // create new transaction by schedule automatically
 async function ScheduleManager(db) {
-
     while (ScheduleManager.isRunning) {
         console.log("Schedule manager running...");
         // TODO Sleep alg.
@@ -75,7 +59,7 @@ async function ScheduleManager(db) {
 
             newTransactions.push(newTransaction)
 
-            console.log("endTime", endTime) 
+            console.log("endTime", endTime)
             // check and delete schedule is expires
             if (endTime != null && endTime <= today) {
                 schedulesWillDelete.push(schedule)
@@ -90,7 +74,7 @@ async function ScheduleManager(db) {
             // Define new entry time 1 repetitionType negative way in time 
             scheduleWillUpdate.transactionEntryTime = addTimeToDateByRepetitionTypeAndTimes(repetitionType, 1, nextCreationTime, true)
             schedulesWillUpdate.push(scheduleWillUpdate)
-            console.log(scheduleWillUpdate) 
+            console.log(scheduleWillUpdate)
         }
         // Update schedules together
         // if (schedulesWillUpdate.length > 0)
