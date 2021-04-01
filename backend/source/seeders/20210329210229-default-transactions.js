@@ -10,9 +10,8 @@ module.exports = {
     const transaction = [];
     const schedules = [];
     // add transaction
-    for (let id = 1; id < 10; id++) {
+    for (let id = 1; id < 11; id++) {
       transaction.push({
-        id,
         start_date: new Date(),
         amount: (id * Math.random() * 100),
         sign: true,
@@ -29,9 +28,8 @@ module.exports = {
     const tomorrow = new Date(today);
     tomorrow.setDate(today.getDate() + 1);
     // add scheduled transaction
-    for (let id = 1; id < 5; id++) {
+    for (let id = 1; id < 6; id++) {
       schedules.push({
-        id,
         transaction_id: id,
         repetition_type: 1,
         times: 15,

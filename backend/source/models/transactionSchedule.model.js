@@ -2,7 +2,6 @@ module.exports = (sequelize, Sequelize) => {
     const TransactionSchedule = sequelize.define('transactionSchedule', {
         id: {
             type: Sequelize.INTEGER,
-            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
@@ -33,7 +32,8 @@ module.exports = (sequelize, Sequelize) => {
         }
     }, {
         underscored: true,
-        paranoid: true
+        paranoid: true,
+        timestamps: true,
     })
 
     TransactionSchedule.associate = function (models) {

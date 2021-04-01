@@ -2,7 +2,6 @@ module.exports = (sequelize, Sequelize) => {
     const TransactionSituation = sequelize.define('transactionSituation', {
         id: {
             type: Sequelize.INTEGER,
-            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },

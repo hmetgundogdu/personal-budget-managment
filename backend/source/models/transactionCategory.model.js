@@ -2,7 +2,6 @@ module.exports = (sequelize, Sequelize) => {
     const TransactionCategory = sequelize.define('transactionCategory', {
         id: {
             type: Sequelize.INTEGER,
-            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },

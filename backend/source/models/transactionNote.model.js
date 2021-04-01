@@ -2,7 +2,6 @@ module.exports = (sequelize, Sequelize) => {
     const TransactionNote = sequelize.define('transactionNote', {
         id: {
             type: Sequelize.INTEGER,
-            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
