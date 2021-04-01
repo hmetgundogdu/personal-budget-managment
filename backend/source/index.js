@@ -36,7 +36,9 @@ controllers(app, db)
 app.use(function (req, res) {
   res.status(404).render('404', { url: req.originalUrl })
 })
-//db.sequelize.sync()
+
+db.sequelize.sync()
+
 app.listen(81)
 
 require("./tasks").ScheduleManager(db);

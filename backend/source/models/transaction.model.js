@@ -29,10 +29,9 @@ module.exports = (sequelize, Sequelize) => {
     }, { underscored: true })
 
     Transaction.associate = function (models) {
-        Transaction.belongsTo(models.user)
-        Transaction.belongsTo(models.transactionCategory)
-        Transaction.belongsTo(models.transactionSituation)
-        Transaction.hasOne(models.transactionNote, { foreignKey: "node_id" })
+        Transaction.hasOne(models.transactionCategory)
+        Transaction.hasOne(models.transactionSituation)
+        Transaction.hasOne(models.transactionNote, { foreignKey: "id" })
     }
 
     return Transaction

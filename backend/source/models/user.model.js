@@ -14,10 +14,11 @@ module.exports = (sequelize, Sequelize) => {
     }
   }, { underscored: true })
 
-  User.associate = function () {
-    
+  User.associate = function (models) {
+    User.hasMany(models.transaction)
+    User.hasMany(models.transactionSchedule)
   };
-  
+
   return User
-  
+
 }

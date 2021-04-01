@@ -19,6 +19,7 @@ module.exports = {
         created_at: new Date(),
         updated_at: new Date(),
         user_id: 1,
+        is_genesis: 6 > id ? true : false,
         transaction_category_id: getRandomArbitrary(1, 5),
         transaction_situation_id: getRandomArbitrary(1, 4),
       });
@@ -32,11 +33,12 @@ module.exports = {
       schedules.push({
         id,
         transaction_id: id,
-        repetition: 1,
+        repetition_type: 1,
         times: 15,
         end_time: id % 2 == 0 ? tomorrow : null,
-        next_creation_time: tomorrow,
         last_creation_time: today,
+        next_creation_time: tomorrow,
+        transaction_entry_time: today,
         created_at: new Date(),
         updated_at: new Date()
       })

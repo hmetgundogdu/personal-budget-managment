@@ -7,9 +7,9 @@ async function ScheduleManager(db) {
     // schedule access query 
     // SCHEDULE(isNotDeleted,  ) ---> transaction_id ---> TRANSACTION
 
-
+    const nowTime = new Date()
     const schedules = await db.transactionSchedule.findAll({
-        where: 
+        where: nowTime
     });
 
     for(const schedule of schedules) {
