@@ -22,6 +22,7 @@
               <line-chart
                 :options="lineChartOptions"
                 :chartdata="weeklyConstChart"
+                ref="weeklyConstChart"
               />
             </v-card-text>
           </v-card>
@@ -35,7 +36,7 @@
             <transaction-table
               @onClickRow="showItem"
               :headers="headers"
-              :data="data"
+              :data.sync="summaryData"
             />
           </v-card-text>
         </v-card>
@@ -101,12 +102,12 @@ export default {
       maintainAspectRatio: false,
     },
     mounthlyConstWithCategoriesChart: {
-      labels: ["Ev", "Eğlence", "Araç", "Diğer"],
+      labels: [],
       datasets: [
         {
           label: "Ev",
           backgroundColor: ["#41B883", "#E46651", "#DD1B16", "#CCC"],
-          data: [getRandomInt(), getRandomInt(), getRandomInt(), 0.2],
+          data: [1, 2, 3, 4],
         },
       ],
     },
@@ -116,7 +117,7 @@ export default {
         {
           label: "Harcama",
           backgroundColor: "#41B883",
-          data: daysOfWeek.map(() => getRandomInt()),
+          data: daysOfWeek.map(() => 0),
         },
       ],
     },
@@ -127,76 +128,89 @@ export default {
       { text: "Saat", value: "time" },
       { text: "Durum", value: "status" },
     ],
-    data: [
-      {
-        icon: "mdi-home",
-        category: "Ev",
-        amount: 150,
-        time: new Date().toLocaleDateString("tr-TR", { time: "long" }),
-        sign: "positive",
-        status: "Beklemede",
-        vendor: new Date().toLocaleDateString("tr-TR", dateOption),
-      },
-      {
-        icon: "mdi-car",
-        category: "Araba",
-        amount: 150,
-        time: new Date().toLocaleDateString("tr-TR", { time: "long" }),
-        sign: "positive",
-        status: "Gerçekleşti",
-        vendor: new Date().toLocaleDateString("tr-TR", dateOption),
-      },
-      {
-        icon: "mdi-",
-        category: "",
-        amount: 150,
-        time: new Date().toLocaleDateString("tr-TR", { time: "long" }),
-        sign: "positive",
-        status: "Belirtilmedi",
-        vendor: new Date().toLocaleDateString("tr-TR", dateOption),
-      },
-      {
-        icon: "mdi-home",
-        category: "Ev",
-        amount: 150,
-        time: new Date().toLocaleDateString("tr-TR", { time: "long" }),
-        sign: "positive",
-        status: "Beklemede",
-        vendor: new Date(new Date().getDate() + 4).toLocaleDateString(
-          "tr-TR",
-          dateOption
-        ),
-      },
-      {
-        icon: "mdi-car",
-        category: "Araba",
-        amount: 150,
-        time: new Date(new Date().getDate() + 1).toLocaleDateString("tr-TR", {
-          time: "long",
-        }),
-        sign: "positive",
-        status: "Gerçekleşti",
-        vendor: new Date(new Date().getDate() + 1).toLocaleDateString(
-          "tr-TR",
-          dateOption
-        ),
-      },
-      {
-        icon: "mdi-",
-        category: "",
-        amount: 150,
-        time: new Date().toLocaleDateString("tr-TR", { time: "long" }),
-        sign: "positive",
-        status: "Belirtilmedi",
-        vendor: new Date(new Date().getDate() + 1).toLocaleDateString(
-          "tr-TR",
-          dateOption
-        ),
-      },
-    ],
+    summaryData: [],
   }),
   methods: {
     showItem: (item) => alert(JSON.stringify(item)),
+  },
+  async mounted() {
+    const s = this;
+    // fetch MonthlyCostByCategories
+    const categories = await s.$http("user/categories", { method: "GET" });
+    const monthlyCostByCategories = await s.$http(
+      "user/widgets/MonthlyCostByCategories",
+      { method: "GET" }
+    );
+
+    s.mounthlyConstWithCategoriesChart.labels = categories.payload
+      .filter((c) =>
+        monthlyCostByCategories.payload.some(
+          (mc) => mc.transaction_category_id == c.id
+        )
+      )
+      .map((c) => c.name);
+    s.mounthlyConstWithCategoriesChart.datasets[0].data = monthlyCostByCategories.payload.map(
+      (mc) => mc.cost
+    );
+    // fetch weeklyConstChart
+    const weeklyConstChartData = await s.$http("user/widget/weeklyCostByDays", {
+      method: "GET",
+    });
+
+    weeklyConstChartData.payload.forEach((t) => {
+      console.log(
+        new Date(t.day).getDay(),
+        t,
+        s.weeklyConstChart.datasets[0].data
+      );
+      s.weeklyConstChart.datasets[0].data[new Date(t.day).getDay()] = t.cost;
+    });
+    // rerender chart
+    s.$refs.weeklyConstChart.renderChart(
+      s.weeklyConstChart,
+      s.lineChartOptions
+    );
+    // fetch summary data
+    // icon: "mdi-home",
+    // category: "Ev",
+    // amount: 150,
+    // time: new Date().toLocaleDateString("tr-TR", { time: "long" }),
+    // sign: "positive",
+    // status: "Beklemede",
+    // vendor: new Date().toLocaleDateString("tr-TR", dateOption),
+
+    // amount: "6.11"
+    // createdAt: "2021-04-01T04:06:44.026Z"
+    // id: 6
+    // isGenesis: false
+    // note_id: null
+    // sign: true
+    // startDate: "2021-04-01T04:06:44.026Z"
+    // transactionCategoryId: 3
+    // transactionSituationId: 3
+    // updatedAt: "2021-04-01T04:06:44.026Z"
+    // userId: 1
+
+    const sitiuations = await s.$http("user/situations/", {
+      method: "GET",
+    });
+
+    const summaryData = await s.$http("user/widget/summary", {
+      method: "GET",
+    });
+
+console.log(categories)
+    if (summaryData.payload != null) {
+      s.summaryData = summaryData.payload.map((sd) => ({
+        id: sd.id,
+        icon: "mdi-home",
+        category: categories.payload.find((c) => c.id == sd.transactionCategoryId).name,
+        status: sitiuations.payload.find((s) => s.id == sd.transactionSituationId).name,
+        amount: sd.amount,
+        sign: sd.sign,
+        vendor: new Date().toLocaleDateString("tr-TR", sd.startDate),
+      }));
+    }
   },
 };
 </script>

@@ -7,6 +7,12 @@ export default (endPoint, options = {}, getResponse) => {
         }
     }
 
+    const session = window.localStorage.getItem("session")
+    if (session != null) {
+        const { accessToken } = JSON.parse(session);
+        defaultOptions.headers["Authorization"] = "Bearer " + accessToken
+    }
+
     options = Object.assign(defaultOptions, options)
 
     if (options.body && typeof options.body != "string") {
@@ -15,7 +21,7 @@ export default (endPoint, options = {}, getResponse) => {
 
     let fetchPromise = window.fetch(`${config.apiUrl}/${endPoint}`, options)
 
-    if(!getResponse)
+    if (!getResponse)
         fetchPromise = fetchPromise.then((res) => {
             document.dispatchEvent(new CustomEvent("apiCall", { res }))
             return res.json()
